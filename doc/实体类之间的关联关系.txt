@@ -1,0 +1,26 @@
+1、用户信息（PersonInfo）与微信账号（WeChatAuth）、本地账号（LocalAuth）之间具有“一对多”关联：
+    1）在数据库中，微信账号表与本地账号表通过用户ID作为外键与用户信息表建立联系
+    2）在实体类中，WeChatAuth类与LocalAuth类中将PersonInfo对象作为类属性
+
+2、店铺信息（Shop）与区域（Area）之间具有“多对一”关联
+    1）在数据库中，店铺信息通过区域ID作为外键与店铺信息表建立联系
+    2）在实体类中，Shop类中将Area对象作为类属性
+
+3、店铺信息（Shop）与店铺类别（ShopCategory）之间具有“多对一”关联
+    1）在数据库中，店铺信息通过店铺类别ID作为外键与店铺类别表建立联系
+    2）在实体类中，Shop类中将ShopCategory对象作为类属性
+
+4、店铺信息（Shop）与商品信息（Product）之间具有“一对多”关联
+    1）在数据库中，商品信息通过店铺ID作为外键与店铺类别建立联系
+    2）在实体类中，Product类中将Shop对象作为类属性
+
+5、店铺信息（Shop）与商品类别（ProductCategory）之间具有“一对多”关联
+    1）在实体类中，ProductCategory中将Long类型的shopId作为类属性
+
+6、商品信息（Product）与商品类别（ProductCategory）之间具有“多对一”关联
+    1）在数据库中，商品信息通过商品类别ID作为外键与商品类别建立联系
+    2）在实体类中，Product类中将ProductCategory对象作为类属性
+
+7、商品信息（Product）与详情图片（ProductImg）之间具有“一对多”关联
+    1）在数据库中，详情图片通过商品ID作为外键与商品信息建立联系
+    2）在实体类中，Product类中将ProductCategory类型的List集合对象作为类属性
