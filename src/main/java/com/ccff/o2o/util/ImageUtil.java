@@ -2,6 +2,7 @@ package com.ccff.o2o.util;
 
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -15,7 +16,7 @@ public class ImageUtil {
     private static final SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
     private static final Random random = new Random();
 
-    public static String generateThumbnails(File thumbnails,String targetAddr){
+    public static String generateThumbnails(File thumbnails, String targetAddr){
         String realFileName = getRandomFileName();
         String extension = getFileExtension(thumbnails);
         makeDirPath(targetAddr);
@@ -59,7 +60,7 @@ public class ImageUtil {
      * 生成随机文件名，当前年月日小时分钟秒钟+五位随机数
      * @return
      */
-    private static String getRandomFileName() {
+    public static String getRandomFileName() {
         //获取随机五位数
         int rannum = random.nextInt(89999+10000);
         String nowTimeStr = sDateFormat.format(new Date());
