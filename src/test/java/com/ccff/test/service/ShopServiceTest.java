@@ -12,7 +12,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Date;
 
 public class ShopServiceTest extends BaseTest {
@@ -32,16 +34,16 @@ public class ShopServiceTest extends BaseTest {
         shop.setOwner(owner);
         shop.setArea(area);
         shop.setShopCategory(shopCategory);
-        shop.setShopName("测试的店铺1");
-        shop.setShopDesc("test1");
-        shop.setShopAddr("test1");
-        shop.setPhone("test1");
+        shop.setShopName("测试的店铺3");
+        shop.setShopDesc("test3");
+        shop.setShopAddr("test3");
+        shop.setPhone("test3");
         shop.setCreateTime(new Date());
         shop.setEnableStatus(ShopStateEnum.CHECK.getState());
         shop.setAdvice("审核中");
 
         String path = "C:\\Users\\xiaobaixiaoda\\Desktop\\maidi5.jpg";
         File shopImg = new File(path);
-        ShopExecution shopExecution = shopService.addShop(shop,shopImg);
+        ShopExecution shopExecution = shopService.addShop(shop,new FileInputStream(shopImg),shopImg.getName());
     }
 }

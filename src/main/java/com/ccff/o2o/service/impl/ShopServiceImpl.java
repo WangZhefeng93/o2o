@@ -11,9 +11,9 @@ import com.ccff.o2o.util.PathUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.Date;
 
 @Service
@@ -23,7 +23,7 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional
-    public ShopExecution addShop(Shop shop, File shopImg) {
+    public ShopExecution addShop(Shop shop, InputStream shopImgInputStream, String fileName) {
         //第一步，对shop对象进行空值判断
         if (shop == null){
             return new ShopExecution(ShopStateEnum.NULL_SHOP);
@@ -38,10 +38,10 @@ public class ShopServiceImpl implements ShopService {
             if (effectedNUm <= 0){
                 throw new ShopOperationException("店铺创建失败");
             } else {
-                if (shopImg != null){
+                if (shopImgInputStream != null){
                     //3、第三步，存储图片
                     try {
-                        addShopImg(shop,shopImg);
+                        addShopImg(shop, shopImgInputStream, fileName);
                     } catch (Exception ex){
                         throw new ShopOperationException("addShop error:"+ex.getMessage());
                     }
@@ -58,11 +58,11 @@ public class ShopServiceImpl implements ShopService {
         return new ShopExecution(ShopStateEnum.CHECK,shop);
     }
 
-    private void addShopImg(Shop shop, File shopImg) {
+    private void addShopImg(Shop shop, InputStream shopImgInputStream, String fileName) {
         //1、获取Shop图片目录的相对路径
         String dest = PathUtil.getShopImagePath(shop.getShopId());
         //2、存储图片，并返回存储后的相对路径
-        String shopImgAddr = ImageUtil.generateThumbnails(shopImg,dest);
+        String shopImgAddr = ImageUtil.generateThumbnails(shopImgInputStream,fileName,dest);
         //3、设置shop对象保存后的相对路径
         shop.setShopImg(shopImgAddr);
     }

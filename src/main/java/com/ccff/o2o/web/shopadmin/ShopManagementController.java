@@ -10,8 +10,6 @@ import com.ccff.o2o.service.AreaService;
 import com.ccff.o2o.service.ShopCategoryService;
 import com.ccff.o2o.service.ShopService;
 import com.ccff.o2o.util.HttpServletRequestUtil;
-import com.ccff.o2o.util.ImageUtil;
-import com.ccff.o2o.util.PathUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -95,30 +93,21 @@ public class ShopManagementController {
         //（1）判断店铺是否为空
         if (shop != null && shopImg != null){
             PersonInfo owner = new PersonInfo();
+            //Session TODO
             owner.setUserId(1L);
             shop.setOwner(owner);
-            File shopImgFile = new File(PathUtil.getImgBasePath()+ImageUtil.getRandomFileName());
+            ShopExecution shopExecution = null;
             try {
-                shopImgFile.createNewFile();
-            } catch (Exception e){
-                modelMap.put("result",false);
-                modelMap.put("errMsg",e.getMessage());
-                return modelMap;
-            }
-            try {
-                inputStreamToFile(shopImg.getInputStream(),shopImgFile);
+                shopExecution = shopService.addShop(shop,shopImg.getInputStream(),shopImg.getOriginalFilename());
+                if (shopExecution.getState() == ShopStateEnum.CHECK.getState()){
+                    modelMap.put("result",true);
+                } else {
+                    modelMap.put("result",false);
+                    modelMap.put("errMsg",shopExecution.getStateInfo());
+                }
             } catch (IOException e) {
                 modelMap.put("result",false);
                 modelMap.put("errMsg",e.getMessage());
-                return modelMap;
-            }
-            ShopExecution shopExecution = shopService.addShop(shop,shopImgFile);
-            if (shopExecution.getState() == ShopStateEnum.CHECK.getState()){
-                modelMap.put("result",true);
-            } else {
-                modelMap.put("result",false);
-                modelMap.put("errMsg",shopExecution.getStateInfo());
-                return modelMap;
             }
             return modelMap;
         } else {
@@ -128,26 +117,4 @@ public class ShopManagementController {
         }
     }
 
-    private static void inputStreamToFile(InputStream ins, File file){
-        FileOutputStream os = null;
-        try {
-            os = new FileOutputStream(file);
-            int bytesRead = 0;
-            byte[] buffer = new byte[1024];
-            while ((bytesRead = ins.read(buffer)) != -1){
-                os.write(buffer,0,bytesRead);
-            }
-        } catch (Exception e){
-            throw new RuntimeException("调用inputStreamToFile产生异常"+e.getMessage());
-        } finally {
-            try {
-                if (os != null)
-                    os.close();
-                if (ins != null)
-                    ins.close();
-            } catch (Exception e){
-                throw new RuntimeException("inputStreamToFile关闭IO产生异常"+e.getMessage());
-            }
-        }
-    }
 }
