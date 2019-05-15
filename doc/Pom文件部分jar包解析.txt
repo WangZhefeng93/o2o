@@ -35,3 +35,7 @@
     4）Spring Test
 
 13、net.coobird.thumbnailator：图片处理相关jar包
+
+14、com.github.penggle.kaptcha：验证码相关jar包
+
+15、commons-fileupload：文件上传相关jar包

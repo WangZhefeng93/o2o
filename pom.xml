@@ -166,6 +166,7 @@
       <version>0.4.8</version>
     </dependency>
 
+    <!--验证码相关-->
     <!-- https://mvnrepository.com/artifact/com.github.penggle/kaptcha -->
     <dependency>
       <groupId>com.github.penggle</groupId>

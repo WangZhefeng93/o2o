@@ -9,6 +9,7 @@ import com.ccff.o2o.enums.ShopStateEnum;
 import com.ccff.o2o.service.AreaService;
 import com.ccff.o2o.service.ShopCategoryService;
 import com.ccff.o2o.service.ShopService;
+import com.ccff.o2o.util.CodeUtil;
 import com.ccff.o2o.util.HttpServletRequestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,11 @@ public class ShopManagementController {
     @ResponseBody
     private Map<String,Object> registerShop(HttpServletRequest request){
         Map<String,Object> modelMap = new HashMap<>();
+        if (!CodeUtil.checkVerifyCode(request)){
+            modelMap.put("result",false);
+            modelMap.put("errMsg","验证码错误！");
+            return modelMap;
+        }
         /**
          * 1、接收并转换相应的参数，包括店铺信息以及图片信息
          */
