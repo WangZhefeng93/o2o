@@ -28,6 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 店铺管理控制器
+ */
 @Controller
 @RequestMapping("/shopadmin")
 public class ShopManagementController {
@@ -38,6 +41,10 @@ public class ShopManagementController {
     @Autowired
     private AreaService areaService = null;
 
+    /**
+     * 获取店铺所属二级分类与所属区域信息
+     * @return 以Map<String,Object>的形式的JSON返回
+     */
     @RequestMapping(value = "/getshopinitinfo", method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> getShopInitInfo(){
@@ -57,6 +64,11 @@ public class ShopManagementController {
         return modelMap;
     }
 
+    /**
+     * 完成注册店铺（添加店铺）功能的逻辑处理
+     * @param request：Http请求对象
+     * @return 以Map<String,Object>形式的JSON返回
+     */
     @RequestMapping(value = "/registershop",method = RequestMethod.POST)
     @ResponseBody
     private Map<String,Object> registerShop(HttpServletRequest request){
