@@ -22,6 +22,41 @@ public class ShopServiceImpl implements ShopService {
     private ShopDao shopDao = null;
 
     @Override
+    public Shop getByShopId(Long shopId) {
+        return shopDao.queryByShopId(shopId);
+    }
+
+    @Override
+    public ShopExecution modifyShop(Shop shop, InputStream shopImgInputStream, String fileName) throws ShopOperationException {
+        if (shop==null || shop.getShopId()==null){
+            return new ShopExecution(ShopStateEnum.NULL_SHOP);
+        } else {
+            try {
+                //第一步，判断是否需要处理图片
+                if((shopImgInputStream != null) && (fileName != null) && (!"".equals(fileName))){
+                    Shop tempShop = shopDao.queryByShopId(shop.getShopId());
+                    if (tempShop.getShopImg() != null){
+                        //如果之前的商铺信息中有图片地址，则先将其删除
+                        ImageUtil.deleteFileOrPath(tempShop.getShopImg());
+                    }
+                    addShopImg(shop,shopImgInputStream,fileName);
+                }
+                //第二步，更新店铺信息
+                shop.setLastEditTime(new Date());
+                int effectNum = shopDao.updateShop(shop);
+                if (effectNum <= 0){
+                    return new ShopExecution(ShopStateEnum.INNER_ERROR);
+                }else {
+                    shop = shopDao.queryByShopId(shop.getShopId());
+                    return new ShopExecution(ShopStateEnum.SUCCESS,shop);
+                }
+            } catch (Exception e){
+                throw new ShopOperationException("modifyShop error："+e.getMessage());
+            }
+        }
+    }
+
+    @Override
     @Transactional
     public ShopExecution addShop(Shop shop, InputStream shopImgInputStream, String fileName) {
         //第一步，对shop对象进行空值判断

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "/shopadmin", method = {RequestMethod.GET})
 public class ShopAdminController {
     /**
-     * 显示注册（添加）店铺的前端HTML页面
+     * 显示注册（添加）和修改店铺的前端HTML页面
      * @return
      */
     @RequestMapping(value = "/shopoperation")

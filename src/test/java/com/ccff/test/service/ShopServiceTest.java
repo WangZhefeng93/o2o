@@ -6,6 +6,7 @@ import com.ccff.o2o.entity.PersonInfo;
 import com.ccff.o2o.entity.Shop;
 import com.ccff.o2o.entity.ShopCategory;
 import com.ccff.o2o.enums.ShopStateEnum;
+import com.ccff.o2o.exceptions.ShopOperationException;
 import com.ccff.o2o.service.ShopService;
 import com.ccff.test.BaseTest;
 import org.junit.Test;
@@ -20,6 +21,19 @@ import java.util.Date;
 public class ShopServiceTest extends BaseTest {
     @Autowired
     private ShopService shopService = null;
+
+    @Test
+    public void testModifyShop() throws ShopOperationException,FileNotFoundException {
+        Shop shop = shopService.getByShopId(2L);
+        shop.setShopName("修改后的店铺名称_不能再错了");
+        String path = "C:\\Users\\xiaobaixiaoda\\Desktop\\2018081819553095 (2).png";
+        File shopImg = new File(path);
+        InputStream inputStream = new FileInputStream(shopImg);
+        ShopExecution shopExecution = shopService.modifyShop(shop,inputStream,shopImg.getName());
+        System.out.println(shopExecution.getState());
+        System.out.println(shopExecution.getStateInfo());
+        System.out.println(shopExecution.getShop().getShopImg());
+    }
 
     @Test
     public void testAddShop() throws FileNotFoundException {

@@ -81,6 +81,24 @@ public class ImageUtil {
         return nowTimeStr + rannum;
     }
 
+    /**
+     * 根据传入的参数对相关文件或路径进行删除
+     * @param storePath：文件的相对路径或目录的相对路径：如果是文件路径则删除该文件，如果是目录路径则删除该目录下的所有文件
+     */
+    public static void deleteFileOrPath(String storePath){
+        //获取文件全路径
+        File fileOrPath = new File(PathUtil.getImgBasePath()+storePath);
+        if (fileOrPath.exists()){
+            if (fileOrPath.isDirectory()){  //目录，删除该目录下的所有文件
+                File[] files = fileOrPath.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                    files[i].delete();
+                }
+            }
+            fileOrPath.delete();    //删除该文件
+        }
+    }
+
     /*public static void main(String[] args) throws IOException {
         System.out.println(basePath);
         Thumbnails.of(new File(basePath+ "/maidi1.jpg"))

@@ -6,6 +6,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ShopDao {
     /**
+     * 通过ShopId查询店铺全部信息
+     * @param shopId：需要查询的店铺的shopId
+     * @return 返回被查询的Shop对象
+     */
+    Shop queryByShopId(long shopId);
+
+    /**
      * 添加商铺
      * @param shop
      * @return 返回受影响的行数
